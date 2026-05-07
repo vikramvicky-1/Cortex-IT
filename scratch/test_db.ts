@@ -1,20 +1,26 @@
-
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient({
-  datasourceUrl: process.env.POSTGRES_PRISMA_URL,
+  log: ['query', 'info', 'warn', 'error'],
 });
 
-async function test() {
-  console.log("Testing connection to:", process.env.POSTGRES_PRISMA_URL);
+async function main() {
+  console.log("Testing connection to Neon DB...");
   try {
-    const result = await prisma.$queryRaw`SELECT 1`;
-    console.log("Connection successful:", result);
-  } catch (err) {
-    console.error("Connection failed:", err);
+    const startTime = Date.now();
+    await prisma.$connect();
+    const connectTime = Date.now() - startTime;
+    console.log(`Connected successfully in ${connectTime}ms!`);
+    
+    // Perform a simple query
+    const count = await prisma.project.count();
+    console.log(`Successfully fetched project count: ${count}`);
+  } catch (error) {
+    console.error("Failed to connect to the database:");
+    console.error(error);
   } finally {
     await prisma.$disconnect();
   }
 }
 
-test();
+main();

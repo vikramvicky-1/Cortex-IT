@@ -5,8 +5,13 @@ import { ArrowLeft } from "lucide-react";
 import prisma from "@/lib/prisma";
 
 export async function generateStaticParams() {
-  const projects = await prisma.project.findMany({ select: { slug: true } });
-  return projects.map((p) => ({ slug: p.slug }));
+  try {
+    const projects = await prisma.project.findMany({ select: { slug: true } });
+    return projects.map((p) => ({ slug: p.slug }));
+  } catch {
+    // Neon DB may be sleeping — return empty so pages render on-demand
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -85,7 +90,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           <div className="flex flex-col md:flex-row md:items-center gap-8 mb-6">
             {study.logo && (
               <div className="relative h-20 sm:h-24 inline-flex overflow-hidden rounded bg-white/5 p-4 mix-blend-screen shrink-0">
-                <Image src={study.logo} alt={`${study.title} Logo`} width={240} height={96} style={{ width: 'auto' }} className="object-contain h-full w-auto" unoptimized />
+                <img src={study.logo} alt={`${study.title} Logo`} className="object-contain h-full w-auto" />
               </div>
             )}
             <h1 className="font-heading font-bold text-4xl md:text-6xl lg:text-7xl tracking-tight leading-[1.05]">

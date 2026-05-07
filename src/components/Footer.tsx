@@ -8,13 +8,15 @@ const mainPages = [
   { name: "About", href: "/#about" },
   { name: "Services", href: "/#services" },
   { name: "Projects", href: "/#projects" },
+  { name: "Careers", href: "/careers" },
   { name: "Contact", href: "/#contact" },
 ];
 
 const caseStudies = [
+  { name: "Daily Docket", href: "/case-study/dailydocket" },
   { name: "SGS Laser", href: "/case-study/sgs-laser" },
-  { name: "BUC India", href: "/case-study/buc-india" },
   { name: "Humanity Calls", href: "/case-study/humanity-calls" },
+  { name: "BUC India", href: "/case-study/buc-india" },
 ];
 
 const services = [

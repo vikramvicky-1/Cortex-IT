@@ -11,7 +11,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ChatBot from "@/components/ChatBot";
 
-export const revalidate = 60; // Auto-refresh homepage cache every 60 seconds
+export const revalidate = 0; // Set to 0 to ensure immediate visibility of logo fixes
 
 export default function Home() {
   return (

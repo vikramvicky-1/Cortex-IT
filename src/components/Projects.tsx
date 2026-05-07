@@ -4,8 +4,18 @@ import ScrollReveal from "./ScrollReveal";
 import prisma from "@/lib/prisma";
 
 export default async function Projects() {
-  // Fetch from DB
-  const rawProjects = await prisma.project.findMany();
+  // Fetch from DB with retry for Neon cold starts
+  let rawProjects: Awaited<ReturnType<typeof prisma.project.findMany>> = [];
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      rawProjects = await prisma.project.findMany();
+      break;
+    } catch {
+      if (attempt === 0) await new Promise(r => setTimeout(r, 2000));
+    }
+  }
+
+  if (rawProjects.length === 0) return null;
   
   // Transform JSON strings to arrays
   const projects = rawProjects.map((p) => {
@@ -60,7 +70,11 @@ export default async function Projects() {
                     <div>
                       {project.logo && (
                         <div className="mb-6 relative h-12 sm:h-16 inline-flex overflow-hidden rounded">
-                          <Image src={project.logo} alt={`${project.title} Logo`} width={160} height={64} style={{ width: 'auto' }} className="object-contain object-left h-full w-auto opacity-70 group-hover:opacity-100 transition-opacity duration-300" unoptimized />
+                          <img 
+                            src={project.logo} 
+                            alt={`${project.title} Logo`} 
+                            className="object-contain object-left h-full w-auto opacity-70 group-hover:opacity-100 transition-opacity duration-300" 
+                          />
                         </div>
                       )}
                       <h3 className="font-heading font-light text-2xl md:text-3xl text-white mb-4">

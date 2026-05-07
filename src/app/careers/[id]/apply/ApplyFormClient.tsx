@@ -116,10 +116,25 @@ export default function ApplyFormClient({ jobId, jobTitle }: ApplyFormProps) {
 
   const validateStep = (step: number) => {
     if (step === 2) {
-      if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.mobileNumber.trim()) {
-        alert("Please fill in all mandatory profile details (First Name, Last Name, Email, Mobile Number).");
-        return false;
+      const requiredFields = [
+        { key: 'firstName', label: 'First Name' },
+        { key: 'lastName', label: 'Last Name' },
+        { key: 'email', label: 'Email ID' },
+        { key: 'mobileNumber', label: 'Mobile Number' },
+        { key: 'address', label: 'Address' },
+        { key: 'state', label: 'State' },
+        { key: 'city', label: 'City' },
+        { key: 'graduation', label: 'Highest Graduation' }
+      ];
+
+      for (const field of requiredFields) {
+        const value = formData[field.key as keyof typeof formData];
+        if (!value || (typeof value === 'string' && !value.trim())) {
+          alert(`Please fill in your ${field.label} before proceeding.`);
+          return false;
+        }
       }
+
       if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
         alert("Please enter a valid email address.");
         return false;
