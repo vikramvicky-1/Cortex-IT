@@ -30,7 +30,6 @@ const services = [
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
-  const year = new Date().getFullYear();
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -169,16 +168,6 @@ export default function Footer() {
           <span className="text-gray-500 hover:text-gray-300 text-xs font-light transition-colors cursor-pointer">
             Privacy policy
           </span>
-          <div className="flex flex-col items-center gap-3">
-            <img 
-              src="/logo-full.png" 
-              alt="Cortex IT" 
-              className="h-10 md:h-14 w-auto object-contain opacity-80"
-            />
-            <p className="text-gray-500 text-xs font-light text-center">
-              © Copyright {year} | Design & Developed By team Cortex
-            </p>
-          </div>
           <span className="text-gray-500 hover:text-gray-300 text-xs font-light transition-colors cursor-pointer">
             Terms of Use
           </span>
